@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block title %} Create a Recipe! {% endblock %}
-
 {% block content %}
-	<form method="post">{% csrf_token %}
-		{{ form.as_p }}
-		{{ method_inline.as_p}}
-		{{ ingredients_inline.as_p }}
-		<input type="submit" name="submit"></input>
+	<form  method="post" action="/new_recipe/">{% csrf_token %}
+		<table>
+		{{ new_recipe_form.as_p }}
+		{{ method_form.as_p }}
+		{{ ingredients_form.as_p }}
+		</table>
+		<input type="submit" name="submit" />
 	</form>
-
 {% endblock %}

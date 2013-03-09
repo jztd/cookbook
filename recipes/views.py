@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from recipes.models import recipe, courses, ingredients, method
-from recipes.forms import new_recipe, method_inline, ingredients_inline
-# Create your views here.
+from recipes.forms import new_recipe_form, method_inline, ingredients_inline
 
 def table_of_contents(request):
 	# get all courses
@@ -9,7 +8,7 @@ def table_of_contents(request):
 	# get all recipes
 	recipe_list = recipe.objects.all()
 
-	return render(request, 'table_of_contents.html', {'courses' : all_courses , 'recipe' : recipe_list ,})
+	return render(request, 'table_of_contents.html', {'courses' : all_courses , 'recipe' : recipe_list})
 
 
 def show_recipe(request):
@@ -35,20 +34,20 @@ def show_recipe(request):
 		'image_list': image_list})
 
 def new_recipe(request):
-	if request.POST:
+	if request.method == 'POST':
 		form = new_recipe(request.POST)
 		if form.is_valid():
-			recipe = form.save(commit=False)
-			ingredients_inline = ingredients_inline(request.POST, instance=recipe)
-			method_inline = method_inline(request.POST, instance=recipe)
-			if ingredients_inline.is_valid() and method_inline.is_valid():
+			Recipe = form.save(commit=False)
+			ingredients_form = ingredients_inline(request.POST, instance=Recipe)
+			method_form = method_inline(request.POST, instance=Recipe)
+			if ingredients_form.is_valid() and method_form.is_valid():
 				recipe.save()
-				ingredients_inline.save()
-				method_inline.save()
-				return render(request, 'table_of_contents.html')
+				ingredients_form.save()
+				method_form.save()
+				return render(request, 'table_of_contents.html',{})
 	else:
-		form = new_recipe()
-		method_inline = method_inline()
-		ingredients_inline = ingredients_inline()
-	return render(request, 'new_recipe.html', {'form': form, 'method_inline': method_inline, 'ingredients_inline': ingredients_inline } )
+		form = new_recipe_form()
+		method_form = method_inline(instance=recipe())
+		ingredients_form = ingredients_inline(instance=recipe())
+	return render(request, 'new_recipe.html', {'new_recipe_form': new_recipe_form, 'method_form': method_form, 'ingredients_form': ingredients_form } )
 
