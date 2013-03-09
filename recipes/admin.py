@@ -1,5 +1,5 @@
 from django.contrib import admin
-from recipes.models import recipe , courses, ingredients, method
+from recipes.models import recipe, courses, ingredients, method
 
 class ingredientsInline(admin.StackedInline):
 	model = ingredients
@@ -14,5 +14,5 @@ class recipeAdmin(admin.ModelAdmin):
 	search_fields = ('name', 'course')
 	inlines = [ingredientsInline, methodInline, ]
 
-admin.site.register(recipe , recipeAdmin)
+admin.site.register(recipe, recipeAdmin)
 admin.site.register(courses)

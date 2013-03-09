@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from recipes.models import recipe, courses, ingredients, method
 import recipes.views
+import forms
 # Create your views here.
 
 def table_of_contents(request):
@@ -25,7 +26,7 @@ def show_recipe(request):
 	recipe_name = recipe_name.replace('%20' , ' ' , 100)
 	
 	# find the recipe in the database by looking up the name
-	recipe_name = recipe.objects.get(name__icontains = recipe_name)
+	recipe_name = recipe.objects.filter(name = recipe_name)
 
 	# now we get the ingredients related to the recipe by looking up the matching name
 	ingredients_list = ingredients.objects.filter(related_recipe = recipe_name)
@@ -37,9 +38,21 @@ def show_recipe(request):
 		'image_list': image_list})
 
 def new_recipe(request):
-	host = request.META['REMOTE_ADDR']
-	if 'term' in request.GET:
-		term = request.GET['term']
-		return render(request, 'new_recipe.html',{'host': host, 'term': term})
+	if request.method == 'POST':
+		new_recipe_form = forms.new_recipe_form(data = request.POST)
+		recipe_method = forms.recipe_method(data = request.POST)
+		recipe_ingredients = forms.recipe_ingredients(data= request.POST)
+		if new_recipe_form.is_valid() and recipe_method.is_valid() and recipe_ingredients.is_valid():
+			recipe = new_recipe_form.save()
+			recipe_method.related_recipe = request.POST['name']
+			recipe_ingredients.related_recipe = request.POST['name']
+			recipe_method.save()
+			recipe_ingredients.save()
+			return render(request, 'table_of_contents.html')
+		else: 
+			return redirect('http://www.google.com/')
 	else:
-		return render(request, 'new_recipe.html', {'host': host ,})
+		new_recipe_form = forms.new_recipe_form()
+		recipe_method = forms.recipe_method()
+		recipe_ingredients = forms.recipe_ingredients()
+		return render(request, 'new_recipe.html', {'new_recipe_form': new_recipe_form, 'recipe_method': recipe_method, 'recipe_ingredients': recipe_ingredients})

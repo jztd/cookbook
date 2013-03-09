@@ -21,7 +21,7 @@ class recipe(models.Model):
 		ordering = ["name"]
 
 class ingredients(models.Model):
-	name = models.CharField(max_length = 100)
+	ingredient = models.CharField(max_length = 100)
 	related_recipe = models.ForeignKey(recipe)
 
 	def __unicode__(self):

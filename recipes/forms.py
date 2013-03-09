@@ -1,6 +1,7 @@
 from django import forms
-from django.form import ModelForm
+from django.forms import ModelForm
 from django.db import models
+from recipes.models import recipe, method, ingredients
 from django.forms.models import modelformset_factory
 
 
@@ -17,5 +18,5 @@ class recipe_method(ModelForm):
 class recipe_ingredients(ModelForm):
 	class Meta:
 		model = ingredients
-		fields = ["name"]
+		fields = ["ingredient"]
 
