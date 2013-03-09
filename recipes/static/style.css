@@ -1,0 +1,139 @@
+/* NOTES:
+	I included the different color options in the css (HSL and hex values) for the background to show I 
+	know how to do it, however I overwrite it with the "rgba()" method because it supports an alpha channel
+	I colored the background with a transparent overlay of the background image.
+*/
+
+
+body{
+	background-image:url('bgtexture.png');
+}
+h1,h2,h3,h4{
+	font-family: " Times New Roman", Times , serif;
+	color: #333647;
+	}
+
+p,ul,ol {
+	font-family:"Georgia" , serif;
+	color: #B1A992;
+
+}
+a{
+	text-decoration: none;
+	font-family:"Georgia" , serif;
+}
+
+.appitizer{
+	position:fixed;
+	z-index: -1;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+	background: hsl(38%,80%,52%);
+	background: rgba(132,93,27,.5);
+
+}
+.dessert{
+	position:fixed;
+	z-index: -1;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+	background: #B5B59B;
+	background: rgba(181,181,155,.5);
+}
+.entree{
+	position:fixed;
+	z-index: -1;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+	background: blue;
+	background: rgba(230,125,169,.5);
+}
+.drink{
+	position:fixed;
+	z-index: -1;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+	background: rgb(217,143,130);
+	background: rgba(217,143,130,.5);
+}
+.container{
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	/* for browsers that don't support transparancy IE 8 and older */
+	background:rgb(70,25,25);
+	/* background transparency */
+	background: rgba(70,25,25,.5);
+}
+.tablelinks{
+	list-style: none;
+
+}
+.fact{
+	float: right;
+	width:190px;
+	min-height: 200px;
+	text-align: center;
+	border: solid black 1px;
+	font-family:"Georgia" , serif;
+	color: black;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+#entree.fact{
+	background-color: rgb(125,230,130);
+	background-color: rgba(125,230,130,.5);
+}
+#drink.fact{
+	background-color: rgb(56,140,104);
+	background-color: rgb(56,140,104,.5)
+}
+#dessert.fact{
+	background-color: rgb(86,69,104);
+	background-color: rgba(86,69,104,.5);
+}
+#appetizer.fact{
+	background-color: rgb(27,79,132);
+	background-color: rgba(27,79,132,.5);
+}
+.recipe{
+	float:left;
+	padding: 5px;
+	width:728px;
+	border:solid black 1px;
+}
+#entree.recipe{
+	background-color: rgb(153,68,104);
+	background-color: rgba(153,68,104,.5);
+}
+#dessert.recipe{
+	background-color: rgb(104,104,79);
+	background-color: rgba(104,104,79,.5);
+
+}
+#drink.recipe{
+	background-color: rgb(140,81,70);
+	background-color: rgba(140,81,70,.5)
+}
+#appetizer.recipe{
+	background-color: rgb(208,155,63);
+	background-color: rgba(208,155,63,.5);
+
+}
+.clearfix{
+	clear:both;
+}
+.recipeimg{
+	max-height: 900px;
+	max-width: 400px;
+}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} Create a Recipe! {% endblock %}
+
+{% block content %}
+	<ul>		
+		<li> {{ host }} </li>
+	</ul>
+	{% if term %}
+		<div> {{ term }} </div>
+	{% else %}
+		<form action="/new_recipe/" method="get">
+			<input type="text" name="term">
+			<input type="submit">
+		</form>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} Table of Contents {% endblock %}
+{% block content %}
+	<h1 style="text-align:center;"> Recipe Table of Contents</h1>
+	{% for each_course in courses %}
+	<h2> {{each_course.name.title}} </h2>
+		<ul class="tablelinks">
+		{% for each_recipe in recipe %}
+			{% if each_recipe.course == each_course %}
+			<li> <a href="{% url "recipes.views.show_recipe" %}/{{ each_recipe }}">{{ each_recipe.name.title }} </a></li> 
+			{% endif %}
+		{% endfor %}
+		</ul>
+	{% endfor %}
+{% endblock %}
+{% block footer %}<a href="{% url "recipes.views.new_recipe" %}"> Create Your Own Entry! </a> {% endblock %}
