@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from recipes.models import recipe, courses, ingredients, method
-import recipes.views
-import forms
+from recipes.forms import new_recipe, method_inline, ingredients_inline
 # Create your views here.
 
 def table_of_contents(request):
@@ -9,9 +8,7 @@ def table_of_contents(request):
 	all_courses = courses.objects.all()
 	# get all recipes
 	recipe_list = recipe.objects.all()
-	# save the view as a variable
-	view = recipes.views.show_recipe
-	
+
 	return render(request, 'table_of_contents.html', {'courses' : all_courses , 'recipe' : recipe_list ,})
 
 
@@ -26,33 +23,32 @@ def show_recipe(request):
 	recipe_name = recipe_name.replace('%20' , ' ' , 100)
 	
 	# find the recipe in the database by looking up the name
-	recipe_name = recipe.objects.filter(name = recipe_name)
+	recipe_name = recipe.objects.get(name = recipe_name)
 
 	# now we get the ingredients related to the recipe by looking up the matching name
-	ingredients_list = ingredients.objects.filter(related_recipe = recipe_name)
+	ingredients_list = ingredients.objects.get(related_recipe = recipe_name)
 
 	# get the method from the database the same way
-	method_list = method.objects.filter(related_recipe = recipe_name)
+	method_list = method.objects.get(related_recipe = recipe_name)
 	image_list = recipe_name.image
 	return render(request, 'hello.html', {'srecipe' : recipe_name , 'stuff' : stuff , 'course': recipe_name.course , 'ingredients' : ingredients_list , 'method' : method_list, 
 		'image_list': image_list})
 
 def new_recipe(request):
-	if request.method == 'POST':
-		new_recipe_form = forms.new_recipe_form(data = request.POST)
-		recipe_method = forms.recipe_method(data = request.POST)
-		recipe_ingredients = forms.recipe_ingredients(data= request.POST)
-		if new_recipe_form.is_valid() and recipe_method.is_valid() and recipe_ingredients.is_valid():
-			recipe = new_recipe_form.save()
-			recipe_method.related_recipe = request.POST['name']
-			recipe_ingredients.related_recipe = request.POST['name']
-			recipe_method.save()
-			recipe_ingredients.save()
-			return render(request, 'table_of_contents.html')
-		else: 
-			return redirect('http://www.google.com/')
+	if request.POST:
+		form = new_recipe(request.POST)
+		if form.is_valid():
+			recipe = form.save(commit=False)
+			ingredients_inline = ingredients_inline(request.POST, instance=recipe)
+			method_inline = method_inline(request.POST, instance=recipe)
+			if ingredients_inline.is_valid() and method_inline.is_valid():
+				recipe.save()
+				ingredients_inline.save()
+				method_inline.save()
+				return render(request, 'table_of_contents.html')
 	else:
-		new_recipe_form = forms.new_recipe_form()
-		recipe_method = forms.recipe_method()
-		recipe_ingredients = forms.recipe_ingredients()
-		return render(request, 'new_recipe.html', {'new_recipe_form': new_recipe_form, 'recipe_method': recipe_method, 'recipe_ingredients': recipe_ingredients})
+		form = new_recipe()
+		method_inline = method_inline()
+		ingredients_inline = ingredients_inline()
+	return render(request, 'new_recipe.html', {'form': form, 'method_inline': method_inline, 'ingredients_inline': ingredients_inline } )
+

@@ -1,22 +1,16 @@
 from django import forms
 from django.forms import ModelForm
-from django.db import models
 from recipes.models import recipe, method, ingredients
-from django.forms.models import modelformset_factory
+from django.forms.models import inlineformset_factory
 
 
-class new_recipe_form(ModelForm):
+class new_recipe(ModelForm):
 	class Meta:
 		model = recipe
-		fields = ["name", "course"]
+		fields = ["course", "name"]
 
-class recipe_method(ModelForm):
-	class Meta:
-		model = method
-		fields = ["step"]
 
-class recipe_ingredients(ModelForm):
-	class Meta:
-		model = ingredients
-		fields = ["ingredient"]
+#inline formsets
 
+method_inline = inlineformset_factory(recipe, method, can_delete=False, extra=20)
+ingredients_inline = inlineformset_factory(recipe, ingredients, can_delete=False, extra=20)

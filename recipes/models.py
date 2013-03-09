@@ -22,14 +22,14 @@ class recipe(models.Model):
 
 class ingredients(models.Model):
 	ingredient = models.CharField(max_length = 100)
-	related_recipe = models.ForeignKey(recipe)
+	related_recipe = models.ForeignKey(recipe, blank = True)
 
 	def __unicode__(self):
 		return self.name
 
 class method(models.Model):
 	step = models.CharField(max_length=500)
-	related_recipe = models.ForeignKey(recipe)
+	related_recipe = models.ForeignKey(recipe, blank = True)
 
 	def __unicode__(self):
 		return self.step

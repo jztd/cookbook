@@ -3,9 +3,9 @@
 
 {% block content %}
 	<form method="post">{% csrf_token %}
-		{{ new_recipe_form.as_p }}
-		{{ recipe_method.as_p}}
-		{{ recipe_ingredients.as_p }}
+		{{ form.as_p }}
+		{{ method_inline.as_p}}
+		{{ ingredients_inline.as_p }}
 		<input type="submit" name="submit"></input>
 	</form>
 
