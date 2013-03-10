@@ -12,5 +12,5 @@ class new_recipe_form(ModelForm):
 
 #inline formsets
 
-method_inline = inlineformset_factory(recipe, method, can_delete=False, extra=3)
-ingredients_inline = inlineformset_factory(recipe, ingredients, can_delete=False, extra=3)
+method_inline = inlineformset_factory(recipe, method, can_delete=False, extra=1)
+ingredients_inline = inlineformset_factory(recipe, ingredients, can_delete=False, extra=1)

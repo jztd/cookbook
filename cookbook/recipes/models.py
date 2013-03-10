@@ -13,7 +13,7 @@ class courses(models.Model):
 class recipe(models.Model):
 	course = models.ForeignKey(courses)
 	name = models.CharField(max_length = 100)
-	image = models.ImageField(upload_to ='images', blank=True)
+	image = models.ImageField(upload_to ='images')
 
 	def __unicode__(self):
 		return self.name
@@ -25,7 +25,7 @@ class ingredients(models.Model):
 	related_recipe = models.ForeignKey(recipe, blank = True)
 
 	def __unicode__(self):
-		return self.ingredient
+		return self.name
 
 class method(models.Model):
 	step = models.CharField(max_length=500)

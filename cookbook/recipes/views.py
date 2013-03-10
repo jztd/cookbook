@@ -22,34 +22,32 @@ def show_recipe(request):
 	recipe_name = recipe_name.replace('%20' , ' ' , 100)
 	
 	# find the recipe in the database by looking up the name
-	recipe_name = recipe.objects.get(name__icontains = recipe_name)
+	recipe_name = recipe.objects.get(name = recipe_name)
 
 	# now we get the ingredients related to the recipe by looking up the matching name
-	ingredients_list = ingredients.objects.filter(related_recipe = recipe_name)
+	ingredients_list = ingredients.objects.get(related_recipe = recipe_name)
 
 	# get the method from the database the same way
-	method_list = method.objects.filter(related_recipe = recipe_name)
+	method_list = method.objects.get(related_recipe = recipe_name)
 	image_list = recipe_name.image
 	return render(request, 'hello.html', {'srecipe' : recipe_name , 'stuff' : stuff , 'course': recipe_name.course , 'ingredients' : ingredients_list , 'method' : method_list, 
 		'image_list': image_list})
 
 def new_recipe(request):
 	if request.method == 'POST':
-		form = new_recipe_form(request.POST)
+		form = new_recipe(request.POST)
 		if form.is_valid():
 			Recipe = form.save(commit=False)
 			ingredients_form = ingredients_inline(request.POST, instance=Recipe)
 			method_form = method_inline(request.POST, instance=Recipe)
 			if ingredients_form.is_valid() and method_form.is_valid():
-				Recipe.save()
+				recipe.save()
 				ingredients_form.save()
 				method_form.save()
-				return render(request, 'recipe_created.html',{})
+				return render(request, 'table_of_contents.html',{})
 	else:
 		form = new_recipe_form()
-		method_form = method_inline()
-		ingredients_form = ingredients_inline()
+		method_form = method_inline(instance=recipe())
+		ingredients_form = ingredients_inline(instance=recipe())
 	return render(request, 'new_recipe.html', {'new_recipe_form': new_recipe_form, 'method_form': method_form, 'ingredients_form': ingredients_form } )
-		
-
 

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title%} {{srecipe.name}} {% endblock %}
+{% block content %}
+<div class="{{ srecipe.course }}"></div>
+	<div class="fact" id="{{ srecipe.course|lower }}">
+		<h3> Fun Food Facts! </h3>
+		then some database magic goes here
+	</div>
+	<div class="recipe" id="{{ srecipe.course|lower }}">
+		<h1> {{ srecipe.name.title }} </h1>
+		<img class="recipeimg" src="{{ MEDIA_URL }}{{ image_list }}" alt="{{ srecipe.name }}" title="{{ srecipe.name }}" />
+
+			<h2> Ingredients </h2>
+				<ul class="ingredients">
+					{% for ingredient in ingredients %}
+						<li> {{ ingredient }} </li>
+					{% endfor %}
+				</ul>
+			<h2> Method </h2>
+				<ol class="method">
+					{% for step in method %}
+						<li> {{ step }} </li>
+					{% endfor %}
+				</ol>
+	</div>
+	<div class="clearfix"></div>
+{% endblock %}
